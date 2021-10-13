@@ -9,8 +9,8 @@ function pay { set-location "$pcty" }
 function edit { code "$PROFILE_LOCATION" }
 function editTerminal { code "$PROFILE_LOCATION" }
 
-function startupconfig { Invoke-Expression "cp C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json" }
-function startup { Invoke-Expression "cp C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json" }
+function startupconfig { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
+function startup { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
 function zips { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin\paylocity.taxfiling.formgeneration.zipfiles; open ." }
 function forms { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin; open ." }
 #P
@@ -36,10 +36,9 @@ function rmorig { Invoke-Expression "Get-ChildItem -Recurse -Filter '*.orig' | R
 function fetch { Invoke-Expression "git fetch --all" }
 function gitreset { Invoke-Expression "git reset --hard " }
 function status { Invoke-Expression "git status " }
-function mergeMaster { Invoke-Expression "git checkout master; git pull; git checkout -; git merge master; git mergetool" }
-function mergemaster { Invoke-Expression "git checkout master; git pull; git checkout -; git merge master; git mergetool" }
-function vsmerge { Invoke-Expression "git mergetool vscode" }
-function mmaster { Invoke-Expression "git checkout master; git pull; git checkout -; git merge master; git mergetool" }
+function merge { Invoke-Expression "git mergetool; rmorig" }
+function Merge { Invoke-Expression "git mergetool; rmorig" }
+function vsmerge { Invoke-Expression "git mergetool vscode; rmorig" }
 function cleanrepo { Invoke-Expression "echo 'git clean -fdx'; temp; git reset --hard; git clean -fdx" }
 function gitclean { Invoke-Expression "echo 'git clean -fdx'; temp; git reset --hard; git clean -fdx" }
 function temp { Invoke-Expression "git branch -d temp; git checkout -b temp; git checkout -" }
@@ -77,17 +76,19 @@ function commit {
     Invoke-Expression "git add ."
     Write-Host "git commit -am ""${BRANCH_NAME}: $Args""" -ForegroundColor DarkGray
     Invoke-Expression "git commit -am ""${BRANCH_NAME}: $Args"""
-  } else {
+  }
+  else {
     Write-Host  "You should not be commiting on master!!!" -ForegroundColor DarkRed
   }       
-  }
+}
 
 
 function GetTicketNumber {
-  $Branch= (Invoke-Expression "git symbolic-ref --short HEAD");
-  if($Branch -eq "master"){
+  $Branch = (Invoke-Expression "git symbolic-ref --short HEAD");
+  if ($Branch -eq "master") {
     "master"
-  } else {
+  }
+  else {
     ($Branch -split '/')[1]
   }
 }
