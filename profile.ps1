@@ -5,7 +5,7 @@ Set-PoshPrompt -Theme patriksvensson
 # function InstallPowerShellPowerLineAndFont if you don't have any fonts
 
 $PROFILE_LOCATION = "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"
-$BASH_HOME = "C:\Users\KTotorica"
+$BASH_HOME = $Home
 $pcty = "C:\Paylocity"
 function pay { set-location "$pcty" }
 function edit { code "$PROFILE_LOCATION" }
@@ -108,11 +108,8 @@ function find {
 }
 
 function InstallPowerShellPowerLineAndFont {
-  # you may need to actually set the font in your shell
-  Invoke-Expression "git clone https://github.com/ryanoasis/nerd-fonts"
+  choco install jetbrainsmononf
   Install-Module oh-my-posh 
   Set-PoshPrompt -Theme patriksvensson
-  # install font here I like the jetbrains font
-  # https://github.com/ryanoasis/nerd-fonts
-  Invoke-Expression "./install.ps1 ""JetBrainsMono NF"""
+  echo "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
