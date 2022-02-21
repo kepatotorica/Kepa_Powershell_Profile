@@ -1,3 +1,8 @@
+# If your profile is in another location than edit do the following
+# run $Profile then open paste this into the location of that profile
+#    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1))
+#    invoke-expression $fileContents
+
 Import-Module oh-my-posh
 Set-PoshPrompt -Theme patriksvensson
 # Set-PoshPrompt -Theme pararussel
