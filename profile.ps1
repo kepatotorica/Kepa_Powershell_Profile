@@ -68,7 +68,7 @@ function downloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
 function Downloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
 function desktop { Invoke-Expression 'cd $BASH_HOME\Desktop' }
 function Desktop { Invoke-Expression 'cd $BASH_HOME\Desktop' }
-function open { Invoke-Expression "start ." }
+function open { Invoke-Expression "explorer ." }
 
 function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" }
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
@@ -114,16 +114,10 @@ function find {
 
 function InstallPowerShellPowerLineAndFont {
   winget install oh-my-posh
+  oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
   choco install jetbrainsmononf
-  Install-Module oh-my-posh 
-  Set-PoshPrompt -Theme patriksvensson
   echo "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
-# Import the Chocolatey Profile that contains the necessary code to enable
-# tab-completions to function for `choco`.
-# Be aware that if you are missing these lines from your profile, tab completion
-# for `choco` will not function.
-# See https://ch0.co/tab-completion for details.
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
