@@ -1,15 +1,15 @@
-# If your profile is in another location than edit do the following
+#If your profile is in another location than edit do the following
 # run $Profile then open paste this into the location of that profile
 #    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1))
 #    invoke-expression $fileContents
 
-Import-Module oh-my-posh
-Set-PoshPrompt -Theme patriksvensson
+
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
 # Set-PoshPrompt -Theme pararussel
 # on first set up
 # function InstallPowerShellPowerLineAndFont if you don't have any fonts
 
-$PROFILE_LOCATION = "C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1"
+$PROFILE_LOCATION = "C:\Users\kepat\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 $BASH_HOME = $Home
 $pcty = "C:\Paylocity"
 function pay { set-location "$pcty" }
@@ -113,8 +113,18 @@ function find {
 }
 
 function InstallPowerShellPowerLineAndFont {
+  winget install oh-my-posh
   choco install jetbrainsmononf
   Install-Module oh-my-posh 
   Set-PoshPrompt -Theme patriksvensson
   echo "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
+}
+# Import the Chocolatey Profile that contains the necessary code to enable
+# tab-completions to function for `choco`.
+# Be aware that if you are missing these lines from your profile, tab completion
+# for `choco` will not function.
+# See https://ch0.co/tab-completion for details.
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
 }
