@@ -1,0 +1,2 @@
+Boot to bios from right click -> https://www.majorgeeks.com/content/page/boot_to_uefi_firmware_settings.html
+Ditto clip board manager -> https://ditto-cp.sourceforge.io/
