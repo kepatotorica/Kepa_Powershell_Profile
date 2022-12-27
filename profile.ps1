@@ -7,11 +7,7 @@
 #    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Users\kepat\Kepa_Powershell_Profile\profile.ps1))
 #    invoke-expression $fileContents
 
-
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
-# Set-PoshPrompt -Theme pararussel
-# on first set up
-# function InstallPowerShellPowerLineAndFont if you don't have any fonts
 
 $PROFILE_LOCATION = "C:\Users\kepat\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 $BASH_HOME = $Home
@@ -118,11 +114,7 @@ function find {
 
 function InstallPowerShellPowerLineAndFont {
   winget install JanDeDobbeleer.OhMyPosh -s winget
-  oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
-  choco install jetbrainsmononf
-  echo "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
-}
-$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+  oh-my-posh font install
+    # I like JetBrainsMono
+  Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
