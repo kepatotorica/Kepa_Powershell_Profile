@@ -1,6 +1,10 @@
 #If your profile is in another location than edit do the following
-# run $Profile then open paste this into the location of that profile
-#    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1))
+# run the following
+#  PWD (FROM WITHIN THE REPO)
+#      use the result of PWD as the path in the next command + \profile.ps1
+#  code $Profile
+# Then paste this into the editor opened from the last command (with the edits from the PWD step)
+#    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Users\kepat\Kepa_Powershell_Profile\profile.ps1))
 #    invoke-expression $fileContents
 
 
