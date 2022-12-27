@@ -117,7 +117,7 @@ function find {
 }
 
 function InstallPowerShellPowerLineAndFont {
-  winget install oh-my-posh
+  winget install JanDeDobbeleer.OhMyPosh -s winget
   oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
   choco install jetbrainsmononf
   echo "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
