@@ -81,8 +81,12 @@ function commit {
   $BRANCH_NAME = GetTicketNumber;
   if ($BRANCH_NAME -ne "master") {
     Invoke-Expression "git add ."
-    Write-Host "git commit -am ""${BRANCH_NAME}: $Args""" -ForegroundColor DarkGray
-    Invoke-Expression "git commit -am ""${BRANCH_NAME}: $Args"""
+    if($BRANCH_NAME){
+      $BRANCH_NAME = "${BRANCH_NAME}: "
+    }
+    Write-Host "git commit -am ""${BRANCH_NAME}$Args""" -ForegroundColor DarkGray
+
+    Invoke-Expression "git commit -am ""${BRANCH_NAME}$Args"""
   }
   else {
     Write-Host  "You should not be commiting on master!!!" -ForegroundColor DarkRed
@@ -117,4 +121,13 @@ function InstallPowerShellPowerLineAndFont {
   oh-my-posh font install
     # I like JetBrainsMono
   Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
+}
+# Import the Chocolatey Profile that contains the necessary code to enable
+# tab-completions to function for `choco`.
+# Be aware that if you are missing these lines from your profile, tab completion
+# for `choco` will not function.
+# See https://ch0.co/tab-completion for details.
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
 }
