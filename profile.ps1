@@ -100,7 +100,8 @@ function GetTicketNumber {
     "master"
   }
   else {
-    ($Branch -split '/')[1]
+    $list = (($Branch -split '/')[1] -split '-')
+    $list[0]+"-"+$list[1]
   }
 }
 
