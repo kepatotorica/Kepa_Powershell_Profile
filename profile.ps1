@@ -66,9 +66,27 @@ function cc7 { Invoke-Expression "git reset --soft HEAD~7" }
 function cdDownloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
 function downloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
 function Downloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
-function desktop { Invoke-Expression 'cd $BASH_HOME\Desktop' }
-function Desktop { Invoke-Expression 'cd $BASH_HOME\Desktop' }
+function desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
+function Desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
 function open { Invoke-Expression "explorer ." }
+
+#Expo
+function androidDebug { Invoke-Expression 'adb shell input keyevent 82' }
+function debugAndroid { Invoke-Expression 'adb shell input keyevent 82' }
+function debug { Invoke-Expression 'adb shell input keyevent 82' }
+function publish { Invoke-Expression 'eas submit' }
+function publishAndroid { Invoke-Expression 'eas submit -p android' }
+function publishIos { Invoke-Expression 'eas submit -p ios' }
+function cleanExpo { Invoke-Expression "expo r -c;" }
+function expoCache { Invoke-Expression "expo r -c;" }
+function easBuildDevelopment { Invoke-Expression "eas build --profile development --platform android" }
+function buildDev { Invoke-Expression "eas build --profile development --platform android" }
+function buildDevAndroid { Invoke-Expression "eas build --profile development --platform android" }
+function buildDevIos { Invoke-Expression "eas build --profile development --platform ios" }
+function buildIos { Invoke-Expression "eas build -p ios" }
+function buildAndroid { Invoke-Expression "eas build -p android" }
+function runDevelop { Invoke-Expression "npx expo start --dev-client" }
+function runDev { Invoke-Expression "npx expo start --dev-client" }
 
 function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" }
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
@@ -77,51 +95,51 @@ function reset { Invoke-Expression ". $PROFILE_LOCATION" }
 function updatePowershell { Invoke-Expression "git clone https:\\github.com\kepatotorica\bashrc.git; cd bashrc; sh install.sh; cd -; rm -fr bashrc" }
 
 function commit {
-  rmorig
-  $BRANCH_NAME = GetTicketNumber;
-  if ($BRANCH_NAME -ne "master") {
-    Invoke-Expression "git add ."
-    if($BRANCH_NAME){
-      $BRANCH_NAME = "${BRANCH_NAME}: "
-    }
-    Write-Host "git commit -am ""${BRANCH_NAME}$Args""" -ForegroundColor DarkGray
+    rmorig
+    $BRANCH_NAME = GetTicketNumber;
+    if ($BRANCH_NAME -ne "master") {
+        Invoke-Expression "git add ."
+        if ($BRANCH_NAME) {
+            $BRANCH_NAME = "${BRANCH_NAME}: "
+        }
+        Write-Host "git commit -am ""${BRANCH_NAME}$Args""" -ForegroundColor DarkGray
 
-    Invoke-Expression "git commit -am ""${BRANCH_NAME}$Args"""
-  }
-  else {
-    Write-Host  "You should not be commiting on master!!!" -ForegroundColor DarkRed
-  }       
+        Invoke-Expression "git commit -am ""${BRANCH_NAME}$Args"""
+    }
+    else {
+        Write-Host  "You should not be commiting on master!!!" -ForegroundColor DarkRed
+    }       
 }
 
 
 function GetTicketNumber {
-  $Branch = (Invoke-Expression "git symbolic-ref --short HEAD");
-  if ($Branch -eq "master") {
-    "master"
-  }
-  else {
-    $list = (($Branch -split '/')[1] -split '-')
-    $list[0]+"-"+$list[1]
-  }
+    $Branch = (Invoke-Expression "git symbolic-ref --short HEAD");
+    if ($Branch -eq "master") {
+        "master"
+    }
+    else {
+        $list = (($Branch -split '/')[1] -split '-')
+        $list[0] + "-" + $list[1]
+    }
 }
 
 function pp {
-  $BRANCH_NAME = Invoke-Expression "git symbolic-ref --short HEAD"
-  Write-Output "Working on branch {$BRANCH_NAME}:'r"
-  BRANCH_NAME=$(git symbolic-ref --short HEAD)
-  Write-Output "git push --set-upstream origin ${BRANCH_NAME}"
-  git push --set-upstream origin ${BRANCH_NAME}
+    $BRANCH_NAME = Invoke-Expression "git symbolic-ref --short HEAD"
+    Write-Output "Working on branch {$BRANCH_NAME}:'r"
+    BRANCH_NAME=$(git symbolic-ref --short HEAD)
+    Write-Output "git push --set-upstream origin ${BRANCH_NAME}"
+    git push --set-upstream origin ${BRANCH_NAME}
 }
 
 function find {
-  (Get-ChildItem -Recurse -Filter $Args[0]).Name
+  (Get-ChildItem -Recurse -Filter $Args[0]).FullName
 }
 
 function InstallPowerShellPowerLineAndFont {
-  winget install JanDeDobbeleer.OhMyPosh -s winget
-  oh-my-posh font install
+    winget install JanDeDobbeleer.OhMyPosh -s winget
+    oh-my-posh font install
     # I like JetBrainsMono
-  Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
+    Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
@@ -130,5 +148,5 @@ function InstallPowerShellPowerLineAndFont {
 # See https://ch0.co/tab-completion for details.
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+    Import-Module "$ChocolateyProfile"
 }
