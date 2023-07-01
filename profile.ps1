@@ -114,11 +114,18 @@ function commit {
 
 function buildSubmit {
     rmorig
+    $confirm = Read-Host "Have you incremented the build number? (y/n)"
+    if ($confirm -ne "y") {
+        Write-Host "Build process aborted." -ForegroundColor DarkRed
+        return
+    }
+
     $BRANCH_NAME = GetTicketNumber;
     if ($BRANCH_NAME -ne "main") {
         Write-Host  "Only submit builds from main!!!" -ForegroundColor DarkRed
     }
     else {
+        Invoke-Expression "git pull"
         Invoke-Expression "$moveToHoppyDays; eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest;"
         Write-Host "git commit -am ""New Build and Submissions for IOS and Android""" -ForegroundColor DarkGray
         Invoke-Expression "git push"
