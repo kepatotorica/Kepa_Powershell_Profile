@@ -11,19 +11,37 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | 
 
 $PROFILE_LOCATION = "C:\Users\kepat\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 $BASH_HOME = $Home
+$pcty = "C:\Paylocity"
+function pay { set-location "$pcty" }
 function edit { code "$PROFILE_LOCATION" }
 function editTerminal { code "$PROFILE_LOCATION" }
 
+function startupconfig { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
+function startup { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
+function zips { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin\paylocity.taxfiling.formgeneration.zipfiles; open ." }
+function forms { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin; open ." }
 #P
-$pcty = "C:\Paylocity"
+$transsrc = $pcty + "\paylocity.taxfiling.transmission\src"
 function logpretty { Invoke-Expression "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" }
+function oneline { Invoke-Expression "git log --oneline" }
+function checkout { Invoke-Expression "git checkout -" }
 function pay { set-location "$pcty" }
+function transapi { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.api " }
+# function trans {Invoke-Expression "cd "$pcty"paylocity.taxfiling.transmission\"}
+function trans { Invoke-Expression "cd $transsrc\.." }
+function transdb { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.db" }
+function transui { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.ui.web" }
+function taxd { Invoke-Expression "cd $transsrc\paylocity.taxfiling.taxdistro " }
 function setup { Invoke-Expression "cd C:\Paylocity\DevBuildTasks\; .\ConfigurationDatabaseSetup.bat; cd C:\Paylocity\Escher\DeveloperTasks\DatabaseSetup; .\ConfigurationDatabase_Deploy.bat" }
+function pdfs { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.ReportGeneration.Service\bin\Debug\; start . ; echo 'most recent pdf'; ls -Art | egrep '\.pdf$' | tail -n 1; cd -" }
+function rmpdfs { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.ReportGeneration.Service\bin\Debug\; rm *.pdf; cd -" }
+#TODOASDF this doesn't work yet but I would like to figure it out so I can just type open pdf
+function openpdf { Invoke-Expression "explorer < ls -Art | egrep '\.pdf$' | tail -n 1; cd -" }
 
 #git
-function oneline { Invoke-Expression "git log --oneline" }
 function rmorig { Invoke-Expression "Get-ChildItem -Recurse -Filter '*.orig' | Remove-Item" }
 function fetch { Invoke-Expression "git fetch --all" }
+function gitreset { Invoke-Expression "git reset --hard " }
 function status { Invoke-Expression "git status " }
 function merge { Invoke-Expression "git mergetool; rmorig" }
 function Merge { Invoke-Expression "git mergetool; rmorig" }
@@ -53,22 +71,24 @@ function Desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
 function open { Invoke-Expression "explorer ." }
 
 #Expo
+$moveToHoppyDays = "cd C:\Users\kepat\hoppy-days-monorepo\hoppy-days;"
 function androidDebug { Invoke-Expression 'adb shell input keyevent 82' }
 function debugAndroid { Invoke-Expression 'adb shell input keyevent 82' }
-function debug { Invoke-Expression 'adb shell input keyevent 82' }
-function publish { Invoke-Expression 'eas submit' }
-function publishAndroid { Invoke-Expression 'eas submit -p android' }
-function publishIos { Invoke-Expression 'eas submit -p ios' }
-function cleanExpo { Invoke-Expression "expo r -c;" }
-function expoCache { Invoke-Expression "expo r -c;" }
-function easBuildDevelopment { Invoke-Expression "eas build --profile development --platform android" }
-function buildDev { Invoke-Expression "eas build --profile development --platform android" }
-function buildDevAndroid { Invoke-Expression "eas build --profile development --platform android" }
-function buildDevIos { Invoke-Expression "eas build --profile development --platform ios" }
-function buildIos { Invoke-Expression "eas build -p ios" }
-function buildAndroid { Invoke-Expression "eas build -p android" }
-function runDevelop { Invoke-Expression "npx expo start --dev-client" }
-function runDev { Invoke-Expression "npx expo start --dev-client" }
+function debug { Invoke-Expression "adb shell input keyevent 82" }
+function publish { Invoke-Expression "$moveToHoppyDays; eas submit" }
+function publishAndroid { Invoke-Expression "$moveToHoppyDays; eas submit -p android" }
+function publishIos { Invoke-Expression "$moveToHoppyDays; eas submit -p ios" }
+function cleanExpo { Invoke-Expression "$moveToHoppyDays; expo r -c;" }
+function expoCache { Invoke-Expression "$moveToHoppyDays; expo r -c;" }
+function easBuildDevelopment { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
+function buildDev { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
+function buildDevAndroid { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
+function buildDevIos { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform ios" }
+function buildIos { Invoke-Expression "$moveToHoppyDays; eas build -p ios" }
+function buildAndroid { Invoke-Expression "$moveToHoppyDays; eas build -p android" }
+function runDevelop { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
+function runDev { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
+function buildSubmit { Invoke-Expression "$moveToHoppyDays; eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest" }
 
 function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" }
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
