@@ -88,7 +88,6 @@ function buildIos { Invoke-Expression "$moveToHoppyDays; eas build -p ios" }
 function buildAndroid { Invoke-Expression "$moveToHoppyDays; eas build -p android" }
 function runDevelop { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
 function runDev { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
-function buildSubmit { Invoke-Expression "$moveToHoppyDays; eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest" }
 
 function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" }
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
@@ -113,6 +112,18 @@ function commit {
     }       
 }
 
+function buildSubmit {
+    rmorig
+    $BRANCH_NAME = GetTicketNumber;
+    if ($BRANCH_NAME -ne "main") {
+        Write-Host  "Only submit builds from main!!!" -ForegroundColor DarkRed
+    }
+    else {
+        Invoke-Expression "$moveToHoppyDays; eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest;"
+        Write-Host "git commit -am ""New Build and Submissions for IOS and Android""" -ForegroundColor DarkGray
+        Invoke-Expression "git push"
+    }       
+}
 
 function GetTicketNumber {
     $Branch = (Invoke-Expression "git symbolic-ref --short HEAD");
