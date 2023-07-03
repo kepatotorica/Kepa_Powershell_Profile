@@ -113,6 +113,7 @@ function commit {
 }
 
 function buildSubmit {
+    Invoke-Expression "$moveToHoppyDays"
     rmorig
     $confirm = Read-Host "Have you incremented the build number? (y/n)"
     if ($confirm -ne "y") {
@@ -122,11 +123,11 @@ function buildSubmit {
 
     $BRANCH_NAME = GetTicketNumber;
     if ($BRANCH_NAME -ne "main") {
-        Write-Host  "Only submit builds from main!!!" -ForegroundColor DarkRed
+        Write-Host  "$BRANCH_NAME Only submit builds from main!!!" -ForegroundColor DarkRed
     }
     else {
         Invoke-Expression "git pull"
-        Invoke-Expression "$moveToHoppyDays; eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest;"
+        Invoke-Expression "eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest;"
         Write-Host "git commit -am ""New Build and Submissions for IOS and Android""" -ForegroundColor DarkGray
         Invoke-Expression "git push"
     }       
@@ -134,8 +135,8 @@ function buildSubmit {
 
 function GetTicketNumber {
     $Branch = (Invoke-Expression "git symbolic-ref --short HEAD");
-    if ($Branch -eq "master") {
-        "master"
+    if ($Branch -eq "main") {
+        "main"
     }
     else {
         $list = (($Branch -split '/')[1] -split '-')
