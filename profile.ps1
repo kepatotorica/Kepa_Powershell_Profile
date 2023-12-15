@@ -158,8 +158,7 @@ function find {
 
 function InstallPowerShellPowerLineAndFont {
     winget install JanDeDobbeleer.OhMyPosh -s winget
-    oh-my-posh font install
-    # I like JetBrainsMono
+    oh-my-posh font install JetBrainsMono
     Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
 # Import the Chocolatey Profile that contains the necessary code to enable
