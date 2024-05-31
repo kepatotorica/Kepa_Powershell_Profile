@@ -7,6 +7,7 @@
 #    $fileContents = [string]::join([environment]::newline, (get-content -path C:\Users\kepat\Kepa_Powershell_Profile\profile.ps1))
 #    invoke-expression $fileContents
 
+
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\patriksvensson.omp.json" | Invoke-Expression
 
 $PROFILE_LOCATION = "C:\Users\kepat\OneDrive\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
@@ -16,29 +17,9 @@ function pay { set-location "$pcty" }
 function edit { code "$PROFILE_LOCATION" }
 function editTerminal { code "$PROFILE_LOCATION" }
 
-function startupconfig { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
-function startup { Copy-Item -Path 'C:\Users\KTotorica\Desktop\Book Notes\backup_sln.startup.json' -Destination 'C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.sln.startup.json' }
-function zips { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin\paylocity.taxfiling.formgeneration.zipfiles; open ." }
-function forms { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.Transmission.Service\bin; open ." }
-#P
-$transsrc = $pcty + "\paylocity.taxfiling.transmission\src"
+#git
 function logpretty { Invoke-Expression "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" }
 function oneline { Invoke-Expression "git log --oneline" }
-function checkout { Invoke-Expression "git checkout -" }
-function pay { set-location "$pcty" }
-function transapi { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.api " }
-# function trans {Invoke-Expression "cd "$pcty"paylocity.taxfiling.transmission\"}
-function trans { Invoke-Expression "cd $transsrc\.." }
-function transdb { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.db" }
-function transui { Invoke-Expression "cd $transsrc\paylocity.taxfiling.transmission.ui.web" }
-function taxd { Invoke-Expression "cd $transsrc\paylocity.taxfiling.taxdistro " }
-function setup { Invoke-Expression "cd C:\Paylocity\DevBuildTasks\; .\ConfigurationDatabaseSetup.bat; cd C:\Paylocity\Escher\DeveloperTasks\DatabaseSetup; .\ConfigurationDatabase_Deploy.bat" }
-function pdfs { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.ReportGeneration.Service\bin\Debug\; start . ; echo 'most recent pdf'; ls -Art | egrep '\.pdf$' | tail -n 1; cd -" }
-function rmpdfs { Invoke-Expression "cd C:\Paylocity\paylocity.taxfiling.transmission\src\Paylocity.TaxFiling.ReportGeneration.Service\bin\Debug\; rm *.pdf; cd -" }
-#TODOASDF this doesn't work yet but I would like to figure it out so I can just type open pdf
-function openpdf { Invoke-Expression "explorer < ls -Art | egrep '\.pdf$' | tail -n 1; cd -" }
-
-#git
 function rmorig { Invoke-Expression "Get-ChildItem -Recurse -Filter '*.orig' | Remove-Item" }
 function fetch { Invoke-Expression "git fetch --all" }
 function gitreset { Invoke-Expression "git reset --hard " }
@@ -71,29 +52,45 @@ function Desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
 function open { Invoke-Expression "explorer ." }
 
 #Expo
-$moveToHoppyDays = "cd C:\Users\kepat\hoppy-days-monorepo\hoppy-days;"
+# $moveToHoppyDays = "cd C:\Users\kepat\hoppy-days-monorepo\hoppy-days;"
 function androidDebug { Invoke-Expression 'adb shell input keyevent 82' }
 function debugAndroid { Invoke-Expression 'adb shell input keyevent 82' }
 function debug { Invoke-Expression "adb shell input keyevent 82" }
-function publish { Invoke-Expression "$moveToHoppyDays; eas submit" }
-function publishAndroid { Invoke-Expression "$moveToHoppyDays; eas submit -p android" }
-function publishIos { Invoke-Expression "$moveToHoppyDays; eas submit -p ios" }
-function cleanExpo { Invoke-Expression "$moveToHoppyDays; expo r -c;" }
-function expoCache { Invoke-Expression "$moveToHoppyDays; expo r -c;" }
-function easBuildDevelopment { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
-function buildDev { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
-function buildDevAndroid { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform android" }
-function buildDevIos { Invoke-Expression "$moveToHoppyDays; eas build --profile development --platform ios" }
-function buildIos { Invoke-Expression "$moveToHoppyDays; eas build -p ios" }
-function buildAndroid { Invoke-Expression "$moveToHoppyDays; eas build -p android" }
-function runDevelop { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
-function runDev { Invoke-Expression "$moveToHoppyDays; npx expo start --dev-client" }
+function publish { Invoke-Expression "eas submit" }
+function submitAndroid { Invoke-Expression "eas submit -p android --latest" }
+function publishAndroid { Invoke-Expression "eas submit -p android --latest" }
+function publishIos { Invoke-Expression "eas submit -p ios" }
+function submitIos { Invoke-Expression "eas submit -p ios" }
+function cleanExpo { Invoke-Expression "expo r -c;" }
+function expoCache { Invoke-Expression "expo r -c;" }
+function easBuildDevelopment { Invoke-Expression "eas build --profile development --platform android" }
+function buildDev { Invoke-Expression "eas build --profile development --platform android" }
+function buildDevAndroid { Invoke-Expression "eas build --profile development --platform android" }
+function buildDevIos { Invoke-Expression "eas build --profile development --platform ios" }
+function buildIos { Invoke-Expression "eas build -p ios" }
+function buildAndroid { Invoke-Expression "eas build -p android" }
+function buildAndroidLocal { Invoke-Expression "wsl; cd /mnt/c/Users/kepat/free-games-sonar/free-game-sonar; eas build --platform android --local" }
+function runDevelop { Invoke-Expression "npx expo start --dev-client" }
+function runDev { Invoke-Expression "npx expo start --dev-client" }
 
+#General
 function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" }
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
 
-# TODO figure out how to do this with Powershell
-function updatePowershell { Invoke-Expression "git clone https:\\github.com\kepatotorica\bashrc.git; cd bashrc; sh install.sh; cd -; rm -fr bashrc" }
+function waitSeconds {
+    Start-Sleep $Args[0] * 60;
+}
+
+function wait {
+    Start-Sleep $Args[0] * 60;
+}
+function waitMinutes {
+    Start-Sleep $Args[0] * 60;
+}
+
+function waitHours {
+    Start-Sleep $Args[0] * 60 * 60;
+}
 
 function commit {
     rmorig
@@ -113,13 +110,13 @@ function commit {
 }
 
 function buildSubmit {
-    Invoke-Expression "$moveToHoppyDays"
+    # Invoke-Expression "$moveToHoppyDays"
     rmorig
-    $confirm = Read-Host "Have you incremented the build number? (y/n)"
-    if ($confirm -ne "y") {
-        Write-Host "Build process aborted." -ForegroundColor DarkRed
-        return
-    }
+    # $confirm = Read-Host "Have you incremented the build number? (y/n)"
+    # if ($confirm -ne "y") {
+    #     Write-Host "Build process aborted." -ForegroundColor DarkRed
+    #     return
+    # }
 
     $BRANCH_NAME = GetTicketNumber;
     if ($BRANCH_NAME -ne "main") {
@@ -127,7 +124,8 @@ function buildSubmit {
     }
     else {
         Invoke-Expression "git pull"
-        Invoke-Expression "eas build -p android; eas submit -p android --latest; eas build -p ios; eas submit -p ios --latest;"
+        # Invoke-Expression "eas build -p android; eas submit -p android --latest"
+        Invoke-Expression "eas build -p ios; eas submit -p ios --latest; eas build -p android; eas submit -p android --latest"
         Write-Host "git commit -am ""New Build and Submissions for IOS and Android""" -ForegroundColor DarkGray
         Invoke-Expression "git push"
     }       
@@ -144,6 +142,44 @@ function GetTicketNumber {
     }
 }
 
+function mp4tomp3 {
+    param (
+        [string]$inputFile
+    )
+
+    # Construct the full path
+    $inputFile = Join-Path (Get-Location) $inputFile
+
+    # Check if the input file exists
+    if (Test-Path $inputFile -PathType Leaf) {
+        $outputFile = $inputFile -replace '.mp4', '.mp3'
+        ffmpeg -i "$inputFile" -q:a 0 -map a "$outputFile"
+        Write-Host "Conversion complete. Output file: $outputFile"
+    }
+    else {
+        Write-Host "Invalid file path. Please provide a valid .mp4 file path."
+    }
+}
+
+function stereotomono {
+    param (
+        [string]$inputFile
+    )
+
+    # Construct the full path
+    $inputFile = Join-Path (Get-Location) $inputFile
+
+    # Check if the input file exists
+    if (Test-Path $inputFile -PathType Leaf) {
+        $outputFile = $inputFile -replace '.mp4', '_mastered.mp4'
+        ffmpeg -i "$inputFile" -af "pan=mono|c0=FL" -c:v copy "$outputFile"        
+        Write-Host "Conversion complete. Output file: $outputFile"
+    }
+    else {
+        Write-Host "Invalid file path. Please provide a valid .mp4 file path."
+    }
+}
+
 function pp {
     $BRANCH_NAME = Invoke-Expression "git symbolic-ref --short HEAD"
     Write-Output "Working on branch {$BRANCH_NAME}:'r"
@@ -157,8 +193,17 @@ function find {
 }
 
 function InstallPowerShellPowerLineAndFont {
+    #Needs version 2.1.0 for autocomplete Install-Module -Name PSReadLine -Scope CurrentUser -Force
+    #History complete for powershell
+    Uninstall-Module -Name PSReadLine -AllVersions -Force
+    Install-Module -Name PSReadLine -Scope CurrentUser -Force
+
+    #Theme for powershell
     winget install JanDeDobbeleer.OhMyPosh -s winget
-    oh-my-posh font install JetBrainsMono
+    # Might need to restart for oh-my-posh to get hit below
+    oh-my-posh font install 
+    # oh-my-posh font install JetBrainsMono
+    # I like JetBrainsMono
     Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
 # Import the Chocolatey Profile that contains the necessary code to enable
