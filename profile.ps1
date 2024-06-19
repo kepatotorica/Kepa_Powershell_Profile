@@ -199,7 +199,8 @@ function InstallPowerShellPowerLineAndFont {
     Install-Module -Name PSReadLine -Scope CurrentUser -Force
 
     #Theme for powershell
-    winget install JanDeDobbeleer.OhMyPosh -s winget
+    #winget install JanDeDobbeleer.OhMyPosh -s winget
+    choco install oh-my-posh
     # Might need to restart for oh-my-posh to get hit below
     oh-my-posh font install 
     # oh-my-posh font install JetBrainsMono
