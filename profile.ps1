@@ -17,6 +17,9 @@ function pay { set-location "$pcty" }
 function edit { code "$PROFILE_LOCATION" }
 function editTerminal { code "$PROFILE_LOCATION" }
 
+#PS
+function source { Invoke-Expression ". $PROFILE_LOCATION" }
+
 #git
 function logpretty { Invoke-Expression "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" }
 function oneline { Invoke-Expression "git log --oneline" }
@@ -50,6 +53,14 @@ function Downloads { Invoke-Expression 'cd $BASH_HOME\Downloads' }
 function desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
 function Desktop { Invoke-Expression 'cd $BASH_HOME\OneDrive\Desktop' }
 function open { Invoke-Expression "explorer ." }
+function smartcopy {
+    $sourceDirectory = Read-Host -Prompt "Enter the source directory (e.g., \\This PC\Switch\4: Installed games)"
+    $destinationDirectory = Read-Host -Prompt "Enter the destination directory (e.g., D:\a emulation\Switch\games)"
+    robocopy "$sourceDirectory" "$destinationDirectory" /XO /E
+
+    Write-Host "Files copied from '$sourceDirectory' to '$destinationDirectory'"
+    Read-Host -Prompt "Press Enter to exit..."
+}
 
 #Expo
 # $moveToHoppyDays = "cd C:\Users\kepat\hoppy-days-monorepo\hoppy-days;"
@@ -78,18 +89,22 @@ function settings { Invoke-Expression "code $BASH_HOME\AppData\Local\Packages\Mi
 function reset { Invoke-Expression ". $PROFILE_LOCATION" }
 
 function waitSeconds {
-    Start-Sleep $Args[0] * 60;
+    $multiple = $Args[0] * 60
+    Start-Sleep $multiple;
 }
 
 function wait {
-    Start-Sleep $Args[0] * 60;
+    $multiple = $Args[0] * 60
+    Start-Sleep $multiple;
 }
 function waitMinutes {
-    Start-Sleep $Args[0] * 60;
+    $multiple = $Args[0] * 60
+    Start-Sleep $multiple;
 }
 
 function waitHours {
-    Start-Sleep $Args[0] * 60 * 60;
+    $multiple = $Args[0] * 60 * 60
+    Start-Sleep $multiple;
 }
 
 function commit {
@@ -112,11 +127,11 @@ function commit {
 function buildSubmit {
     # Invoke-Expression "$moveToHoppyDays"
     rmorig
-    # $confirm = Read-Host "Have you incremented the build number? (y/n)"
-    # if ($confirm -ne "y") {
-    #     Write-Host "Build process aborted." -ForegroundColor DarkRed
-    #     return
-    # }
+    $confirm = Read-Host "Have you incremented the build number? (y/n)"
+    if ($confirm -ne "y") {
+        Write-Host "Build process aborted." -ForegroundColor DarkRed
+        return
+    }
 
     $BRANCH_NAME = GetTicketNumber;
     if ($BRANCH_NAME -ne "main") {
@@ -192,6 +207,48 @@ function find {
   (Get-ChildItem -Recurse -Filter $Args[0]).FullName
 }
 
+function MoveAllSubFilesToRoot {
+    # Create a folder on your thumb drive (for example "E:\drive photos")
+    $TopLevelFolder = "C:\Users\kepat\Downloads\backup"
+    Write-Output "Operating against $TopLevelFolder to change that edit profile"
+
+    # Define the size limit for each folder (10 GB in bytes)
+    $FolderSizeLimit = 200GB #Break these up into nice chunks
+
+    # Initialize variables
+    $CurrentFolderIndex = 1
+    $CurrentFolderSize = 0
+    $CurrentFolderPath = "$TopLevelFolder\Folder$CurrentFolderIndex"
+
+    # Create the first folder
+    New-Item -ItemType Directory -Path $CurrentFolderPath
+
+    # Get all files from all subfolders
+    $Files = Get-ChildItem -Path $TopLevelFolder -Recurse -File
+
+    foreach ($File in $Files) {
+        $FileSize = $File.Length
+   
+        if (($CurrentFolderSize + $FileSize) -gt $FolderSizeLimit) {
+            # Start a new folder
+            $CurrentFolderIndex++
+            $CurrentFolderSize = 0
+            $CurrentFolderPath = "$TopLevelFolder\Folder$CurrentFolderIndex"
+            New-Item -ItemType Directory -Path $CurrentFolderPath
+        }
+
+        # Move the file to the current folder
+        $DestinationPath = Join-Path -Path $CurrentFolderPath -ChildPath $File.Name
+        Move-Item -Path $File.FullName -Destination $DestinationPath -Force
+
+        # Update the current folder size
+        $CurrentFolderSize += $FileSize
+    }
+
+
+    Write-Host "Files have been moved into folders"
+}
+
 function InstallPowerShellPowerLineAndFont {
     #Needs version 2.1.0 for autocomplete Install-Module -Name PSReadLine -Scope CurrentUser -Force
     #History complete for powershell
@@ -199,8 +256,9 @@ function InstallPowerShellPowerLineAndFont {
     Install-Module -Name PSReadLine -Scope CurrentUser -Force
 
     #Theme for powershell
-    #winget install JanDeDobbeleer.OhMyPosh -s winget
-    choco install oh-my-posh
+    winget install JanDeDobbeleer.OhMyPosh -s winget
+    winget install --id Git.Git -e --source winget
+    source
     # Might need to restart for oh-my-posh to get hit below
     oh-my-posh font install 
     # oh-my-posh font install JetBrainsMono
