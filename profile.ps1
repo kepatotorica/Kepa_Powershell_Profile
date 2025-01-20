@@ -19,6 +19,7 @@ function editTerminal { code "$PROFILE_LOCATION" }
 
 #PS
 function source { Invoke-Expression ". $PROFILE_LOCATION" }
+function bios { shutdown /r /fw /t 0 }
 
 #git
 function logpretty { Invoke-Expression "git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all" }
@@ -258,10 +259,10 @@ function InstallPowerShellPowerLineAndFont {
     #Theme for powershell
     winget install JanDeDobbeleer.OhMyPosh -s winget
     winget install --id Git.Git -e --source winget
-    source
+
     # Might need to restart for oh-my-posh to get hit below
     oh-my-posh font install 
-    # oh-my-posh font install JetBrainsMono
+    oh-my-posh font install JetBrainsMono
     # I like JetBrainsMono
     Write-Output "Exit and restart the powershell then go to windows powershell settings in terminal, then appearance then change the font to JetBrainsMono NF"
 }
